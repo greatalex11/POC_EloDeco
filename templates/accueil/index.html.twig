@@ -1,20 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AccueilController!{% endblock %}
+{% block title %}Elo Deco{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+    </style>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/laragon/www/POC_EloDeco/src/Controller/AccueilController.php'|file_link(0) }}">src/Controller/AccueilController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/laragon/www/POC_EloDeco/templates/accueil/index.html.twig'|file_link(0) }}">templates/accueil/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <div class="example-wrapper">
+
+        <h1>ELO DECO</h1>
+        <h2>Aménagement sur mesure de votre intérieur</h2>
+
+        <p>Hello {{ controller_name }}! ✅</p>
+
+        This friendly message is coming from:
+        <ul>
+            <li>Your controller at <code><a
+                            href="{{ 'C:/laragon/www/POC_EloDeco/src/Controller/AccueilController.php'|file_link(0) }}">src/Controller/AccueilController.php</a></code>
+            </li>
+            <li>Your template at <code><a
+                            href="{{ 'C:/laragon/www/POC_EloDeco/templates/accueil/index.html.twig'|file_link(0) }}">templates/accueil/index.html.twig</a></code>
+            </li>
+        </ul>
+    </div>
 {% endblock %}
