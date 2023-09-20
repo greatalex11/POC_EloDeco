@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client index{% endblock %}
+
+{% block body %}
+    <h1>Client index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Date_naissance</th>
+            <th>Adresse</th>
+            <th>Code_postal</th>
+            <th>Ville</th>
+            <th>Annotation</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for client in clients %}
+            <tr>
+                <td>{{ client.id }}</td>
+                <td>{{ client.nom }}</td>
+                <td>{{ client.prenom }}</td>
+                <td>{{ client.dateNaissance ? client.dateNaissance|date('Y-m-d') : '' }}</td>
+                <td>{{ client.user.adresse }}</td>
+                <td>{{ client.user.codePostal }}</td>
+                <td>{{ client.user.ville }}</td>
+                <td>{{ client.user.annotation }}</td>
+                <td>
+                    <a href="{{ path('app_client_show', {'id': client.id}) }}">show</a>
+                    <a href="{{ path('app_client_edit', {'id': client.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_client_new') }}">Create new</a>
+{% endblock %}
