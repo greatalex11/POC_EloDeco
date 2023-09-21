@@ -30,10 +30,14 @@
                 <td>{{ client.user.codePostal }}</td>
                 <td>{{ client.user.ville }}</td>
                 <td>{{ client.user.annotation }}</td>
+                <!--
                 <td>
                     <a href="{{ path('app_client_show', {'id': client.id}) }}">show</a>
                     <a href="{{ path('app_client_edit', {'id': client.id}) }}">edit</a>
                 </td>
+                -->
+
+
             </tr>
         {% else %}
             <tr>
@@ -43,5 +47,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_client_new') }}">Create new</a>
+    <!--<a href="{{ path('app_client_new') }}">Create new</a>-->
+
 {% endblock %}

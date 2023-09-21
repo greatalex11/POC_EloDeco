@@ -58,6 +58,7 @@ class RegistrationController extends AbstractController
                     ->setPrenomContact("");
                 $entityManager->persist($partenaire);
                 $user->setPartenaire($partenaire);
+                $user->setRoles(['ROLE_PARTENAIRE']);
             } elseif ($type === User::CLIENT) {
                 $client = new Client();
                 $client->setNom("")
@@ -65,6 +66,7 @@ class RegistrationController extends AbstractController
                     ->setDateNaissance(new \DateTime());
                 $entityManager->persist($client);
                 $user->setClient($client);
+                $user->setRoles(['ROLE_CLIENT']);
             }
             $user->setAdresse("");
             $user->setCodePostal(0);

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client{% endblock %}
+
+
+{% block body %}
+
+    <div class="mt-4">
+        €€€ TON TABLEAU DE BORD €€€€€
+
+        <div class="mb-4">
+            <p class="text-uppercase">Vous etes dans votre espace personnel </p>
+            <h1>{{ client.prenom |capitalize }}</h1>
+        </div>
+
+
+        <tr>
+            <th>Nom</th>
+            <td>{{ client.nom }}</td>
+        </tr>
+        <tr>
+            <th>Prenom</th>
+            <td>{{ client.prenom }}</td>
+        </tr>
+        <tr>
+            <th>Date_naissance</th>
+            <td>{{ client.dateNaissance ? client.dateNaissance|date('Y-m-d') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Adresse</th>
+            <td>{{ client.user.adresse }}</td>
+        </tr>
+        <tr>
+            <th>Code_postal</th>
+            <td>{{ client.user.codePostal }}</td>
+        </tr>
+        <tr>
+            <th>Ville</th>
+            <td>{{ client.user.ville }}</td>
+        </tr>
+        <tr>
+            <th>Annotation</th>
+            <td>{{ client.user.annotation }}</td>
+        </tr>
+        </tbody>
+        </table>
+
+    </div>
+
+
+    <a href="{{ path('app_client_index') }}">back to list</a>
+
+    <a href="{{ path('app_client_edit', {'id': client.id}) }}">edit</a>
+
+    {{ include('client/_delete_form.html.twig') }}
+{% endblock %}

@@ -52,7 +52,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         /** @var User $user */
         $user = $token->getUser();
         if ($user->isClient()) {
-            return new RedirectResponse($this->urlGenerator->generate('app_client_index'));
+
+            return new RedirectResponse($this->urlGenerator->generate('app_client_show', ["id" => $user->getClient()?->getId()]));
         }
 
         return new RedirectResponse($this->urlGenerator->generate('app_partenaire_index'));

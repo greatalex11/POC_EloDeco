@@ -29,8 +29,8 @@ class ConnexionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $clientInBdd = $clientRepository->findOneBy(['Mail' => $client->getMail(), "MotDePass" => $client->getMotDePass()]);
-            dd($clientInBdd);
-            return $this->redirectToRoute('app_client_index', [], Response::HTTP_SEE_OTHER);
+
+            return $this->redirectToRoute('app_client_index/show', [], Response::HTTP_SEE_OTHER);
         }
         if ($formPartner->isSubmitted() && $formPartner->isValid()) {
             $entityManager->persist($partenaire);
