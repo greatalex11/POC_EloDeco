@@ -44,6 +44,11 @@ class Mail
         $this->modamiteContacts = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->objet;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

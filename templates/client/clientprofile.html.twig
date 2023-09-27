@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Client{% endblock %}
+{% block title %}Profile client{% endblock %}
 
 
 {% block body %}
@@ -8,11 +8,11 @@
     <div class="mt-4">
 
         <div class="mb-4">
-            <p class="text-uppercase">Vous etes dans votre espace personnel !!!!! </p>
+            <p class="text-uppercase">Profile client !!!!! </p>
 
-            <h1>{{ client.prenom |capitalize }}</h1>
+            <h1>{{ client|capitalize }}</h1>
         </div>
-
+        {{ dump() }}
 
         <div class="dropdown-menu">
             <a class="dropdown-item" href="#">Tableau de bord !!!!</a>
@@ -53,19 +53,16 @@
                 <th>Ville</th>
                 <td>{{ client.user.ville }}</td>
             </tr>
-            <tr>
-                <th>Annotation</th>
-                <td>{{ client.user.annotation }}</td>
-            </tr>
+
             </tbody>
         </table>
 
     </div>
 
 
-    <a href="{{ path('app_client_index') }}">back to list</a>
+
 
     <a href="{{ path('app_client_edit', {'id': client.id}) }}">edit</a>
 
-    {{ include('client/_delete_form.html.twig') }}
+
 {% endblock %}

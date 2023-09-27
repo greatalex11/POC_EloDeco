@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Partenaire;
+use App\Entity\Projet;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -36,13 +37,17 @@ class PartenaireRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Partenaire
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * @param int $projet_id
+     * @return Partenaire[]|null
+     */
+    public function findByProjet(Projet $projet): ?array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.projets', 'pr')
+            ->andWhere('pr.id = :projet')
+            ->setParameter('projet', $projet)
+            ->getQuery()
+            ->getResult();
+    }
 }

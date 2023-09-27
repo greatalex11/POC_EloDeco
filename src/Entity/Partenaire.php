@@ -45,6 +45,11 @@ class Partenaire
         $this->mails = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->entreprise;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

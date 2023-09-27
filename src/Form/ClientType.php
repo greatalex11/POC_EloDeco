@@ -14,9 +14,7 @@ class ClientType extends AbstractType
         $builder
             ->add('nom')
             ->add('prenom')
-            ->add('date_naissance')
-            ->add('mails')
-            ->add('projet');
+            ->add('date_naissance');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

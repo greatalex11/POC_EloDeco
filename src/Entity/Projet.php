@@ -31,13 +31,18 @@ class Projet
     #[ORM\ManyToMany(targetEntity: Partenaire::class, inversedBy: 'projets')]
     private Collection $artisans;
 
-    #[ORM\OneToMany(mappedBy: 'projet', targetEntity: Client::class, orphanRemoval: true)]
+    #[ORM\ManyToMany(targetEntity: Client::class, mappedBy: 'projets')]
     private Collection $clients;
 
     public function __construct()
     {
         $this->artisans = new ArrayCollection();
         $this->clients = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->titre;
     }
 
     public function getId(): ?int
@@ -129,7 +134,7 @@ class Projet
     {
         if (!$this->clients->contains($client)) {
             $this->clients->add($client);
-            $client->setProjet($this);
+            $client->addProjet($this);
         }
 
         return $this;
@@ -138,10 +143,7 @@ class Projet
     public function removeClient(Client $client): static
     {
         if ($this->clients->removeElement($client)) {
-            // set the owning side to null (unless already changed)
-            if ($client->getProjet() === $this) {
-                $client->setProjet(null);
-            }
+            $client->removeProjet($this);
         }
 
         return $this;

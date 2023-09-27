@@ -29,16 +29,16 @@ class Client
     #[ORM\ManyToMany(targetEntity: Mail::class, mappedBy: 'client')]
     private Collection $mails;
 
-    #[ORM\ManyToOne(inversedBy: 'clients')]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Projet $projet = null;
-
     #[ORM\OneToOne(mappedBy: 'client', cascade: ['persist', 'remove'])]
     private ?User $user = null;
+
+    #[ORM\ManyToMany(targetEntity: Projet::class, inversedBy: 'clients')]
+    private Collection $projets;
 
     public function __construct()
     {
         $this->mails = new ArrayCollection();
+        $this->projets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -109,18 +109,6 @@ class Client
         return $this;
     }
 
-    public function getProjet(): ?Projet
-    {
-        return $this->projet;
-    }
-
-    public function setProjet(?Projet $projet): static
-    {
-        $this->projet = $projet;
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -139,6 +127,35 @@ class Client
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Projet>
+     */
+    public function getProjets(): Collection
+    {
+        return $this->projets;
+    }
+
+    public function __toString(): string
+    {
+        return $this->nom . " " . $this->prenom;
+    }
+
+    public function addProjet(Projet $projet): static
+    {
+        if (!$this->projets->contains($projet)) {
+            $this->projets->add($projet);
+        }
+
+        return $this;
+    }
+
+    public function removeProjet(Projet $projet): static
+    {
+        $this->projets->removeElement($projet);
 
         return $this;
     }
