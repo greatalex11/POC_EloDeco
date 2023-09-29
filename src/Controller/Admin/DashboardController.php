@@ -65,7 +65,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Client', 'fa fa-user', ClientCrudController::getEntityFqcn());
         yield MenuItem::linkToCrud('Partenaire', 'fa fa-user', PartenaireCrudController::getEntityFqcn());
         yield MenuItem::linkToCrud('Projet', 'fa fa-uikit', \App\Controller\Admin\ProjetCrudController::getEntityFqcn());
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        yield MenuItem::linkToCrud('Document', 'fas fa-list', DocumentCrudController::getEntityFqcn());
+        yield MenuItem::linkToCrud('User', 'fas fa-list', UserCrudController::getEntityFqcn());
+
     }
 
 }

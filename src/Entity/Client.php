@@ -2,13 +2,20 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
-
+#[ApiResource(
+    normalizationContext: ['groups' => ['client:read']],
+    denormalizationContext: ['groups' => ['client:write']],
+    order: ['nom' => 'DESC'],
+)]
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
 {
@@ -17,19 +24,26 @@ class Client
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('client:read')]
+    #[Assert\NotBlank()]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('client:read')]
+    #[Assert\NotBlank()]
     private ?string $prenom = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Groups('client:read')]
     private ?\DateTimeInterface $date_naissance = null;
 
     #[ORM\ManyToMany(targetEntity: Mail::class, mappedBy: 'client')]
+    #[Groups('client:read')]
     private Collection $mails;
 
     #[ORM\OneToOne(mappedBy: 'client', cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
     private ?User $user = null;
 
     #[ORM\ManyToMany(targetEntity: Projet::class, inversedBy: 'clients')]
@@ -41,35 +55,39 @@ class Client
         $this->projets = new ArrayCollection();
     }
 
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
 
     public function getNom(): ?string
     {
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(?string $nom): static
     {
         $this->nom = $nom;
 
         return $this;
     }
 
+    #[client('read')]
     public function getPrenom(): ?string
     {
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setPrenom(?string $prenom): static
     {
         $this->prenom = $prenom;
 
         return $this;
     }
 
+    #[client('read')]
     public function getDateNaissance(): ?\DateTimeInterface
     {
         return $this->date_naissance;
@@ -85,6 +103,7 @@ class Client
     /**
      * @return Collection<int, Mail>
      */
+
     public function getMails(): Collection
     {
         return $this->mails;
@@ -109,6 +128,7 @@ class Client
         return $this;
     }
 
+    #[client('read')]
     public function getUser(): ?User
     {
         return $this->user;
@@ -134,6 +154,7 @@ class Client
     /**
      * @return Collection<int, Projet>
      */
+    #[client('read')]
     public function getProjets(): Collection
     {
         return $this->projets;

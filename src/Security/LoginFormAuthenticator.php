@@ -51,13 +51,17 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
         /** @var User $user */
         $user = $token->getUser();
+        $role = $user->getRole();
         if ($user->isClient()) {
 
-            return new RedirectResponse($this->urlGenerator->generate('app_client_show', ["id" => $user->getClient()?->getId()]));
+            if ($role = ["ADMIN"]) {
+                return new RedirectResponse($this->urlGenerator->generate('app_admin', ["id" => $user->getClient()?->getId()]));
+            } else {
+                return new RedirectResponse($this->urlGenerator->generate('app_client_show', ["id" => $user->getClient()?->getId()]));
+            }
+        } else {
+            return new RedirectResponse($this->urlGenerator->generate('partenaire_menu', ["id" => $user->getPartenaire()?->getId()]));
         }
-
-        return new RedirectResponse($this->urlGenerator->generate('app_partenaire_index'));
-
     }
 
     protected function getLoginUrl(Request $request): string

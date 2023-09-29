@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Validator\NombreImpair;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -36,19 +37,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $adresse = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
+    #[NombreImpair()]
     private ?int $code_postal = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $ville = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $ville = "";
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $annotation = null;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $annotation = "";
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $telephone = null;
 
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
@@ -60,6 +62,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getEmail();
     }
 
     public function getEmail(): ?string
@@ -95,6 +102,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return array_unique($roles);
     }
+
+    public function getRole(): array
+    {
+        $monrole = $this->roles;
+        return $monrole;
+    }
+
 
     public function setRoles(array $roles): static
     {
@@ -145,7 +159,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->adresse;
     }
 
-    public function setAdresse(string $adresse): static
+    public function setAdresse(?string $adresse): static
     {
         $this->adresse = $adresse;
 
@@ -169,7 +183,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->ville;
     }
 
-    public function setVille(string $ville): static
+    public function setVille(?string $ville): static
     {
         $this->ville = $ville;
 
@@ -181,7 +195,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->annotation;
     }
 
-    public function setAnnotation(string $annotation): static
+    public function setAnnotation(?string $annotation): static
     {
         $this->annotation = $annotation;
 
@@ -234,8 +248,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function __toString(): string
-    {
-        return $this->email;
-    }
+
 }

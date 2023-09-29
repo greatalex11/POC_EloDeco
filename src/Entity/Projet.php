@@ -34,10 +34,18 @@ class Projet
     #[ORM\ManyToMany(targetEntity: Client::class, mappedBy: 'projets')]
     private Collection $clients;
 
+    #[ORM\OneToMany(mappedBy: 'idprojet', targetEntity: Document::class)]
+    private Collection $documents;
+
+    #[ORM\OneToMany(mappedBy: 'projet', targetEntity: Taches::class, orphanRemoval: true)]
+    private Collection $taches;
+
     public function __construct()
     {
         $this->artisans = new ArrayCollection();
         $this->clients = new ArrayCollection();
+        $this->documents = new ArrayCollection();
+        $this->taches = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -144,6 +152,66 @@ class Projet
     {
         if ($this->clients->removeElement($client)) {
             $client->removeProjet($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Document>
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(Document $document): static
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents->add($document);
+            $document->setIdprojet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(Document $document): static
+    {
+        if ($this->documents->removeElement($document)) {
+            // set the owning side to null (unless already changed)
+            if ($document->getIdprojet() === $this) {
+                $document->setIdprojet(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Taches>
+     */
+    public function getTaches(): Collection
+    {
+        return $this->taches;
+    }
+
+    public function addTach(Taches $tach): static
+    {
+        if (!$this->taches->contains($tach)) {
+            $this->taches->add($tach);
+            $tach->setProjet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTach(Taches $tach): static
+    {
+        if ($this->taches->removeElement($tach)) {
+            // set the owning side to null (unless already changed)
+            if ($tach->getProjet() === $this) {
+                $tach->setProjet(null);
+            }
         }
 
         return $this;

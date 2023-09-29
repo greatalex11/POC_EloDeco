@@ -16,11 +16,24 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/partenaire')]
 class PartenaireController extends AbstractController
 {
+    #[Route('/{id}/menu', name: 'partenaire_menu', methods: ['GET'])]
+    public function menu(Partenaire $partenaire, Request $request): Response
+    {
+        return $this->render('partenaire/menu.html.twig', [
+
+            'partenaire' => $partenaire,
+            'label' => $this->getUser(),
+
+        ]);
+
+    }
+
     #[Route('/', name: 'app_partenaire_index', methods: ['GET'])]
     public function index(PartenaireRepository $partenaireRepository): Response
     {
         return $this->render('partenaire/index.html.twig', [
-            'partenaires' => $partenaireRepository->findAll(),
+
+            'partenaire' => $partenaireRepository->findBy(),
         ]);
     }
 

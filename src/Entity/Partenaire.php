@@ -6,6 +6,7 @@ use App\Repository\PartenaireRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PartenaireRepository::class)]
 class Partenaire
@@ -15,19 +16,20 @@ class Partenaire
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank()]
     private ?string $entreprise = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $raison_sociale = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $siret = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $nom_contact = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $prenom_contact = null;
 
     #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'artisans')]
@@ -39,10 +41,14 @@ class Partenaire
     #[ORM\OneToOne(mappedBy: 'partenaire', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
+    #[ORM\ManyToMany(targetEntity: Taches::class, mappedBy: 'entreprise')]
+    private Collection $taches;
+
     public function __construct()
     {
         $this->projets = new ArrayCollection();
         $this->mails = new ArrayCollection();
+        $this->taches = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -187,6 +193,33 @@ class Partenaire
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Taches>
+     */
+    public function getTaches(): Collection
+    {
+        return $this->taches;
+    }
+
+    public function addTach(Taches $tach): static
+    {
+        if (!$this->taches->contains($tach)) {
+            $this->taches->add($tach);
+            $tach->addEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTach(Taches $tach): static
+    {
+        if ($this->taches->removeElement($tach)) {
+            $tach->removeEntreprise($this);
+        }
 
         return $this;
     }
